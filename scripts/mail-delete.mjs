@@ -3,8 +3,6 @@
 // Usage: node scripts/mail-delete.mjs <email-lengkap>
 // Env wajib: RUANG_OWNER_PASS
 
-import { execSync } from "node:child_process";
-
 const BASE_URL = "https://ruang.email";
 const DOMAIN = "sang.ceo";
 const OWNER_EMAIL = process.env.RUANG_OWNER_EMAIL;
