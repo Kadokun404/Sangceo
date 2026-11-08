@@ -45,3 +45,20 @@ jobs:
       - name: Gagal bila validasi gagal
         if: steps.val.outcome == 'failure'
         run: exit 1
+      - name: Tolak otomatis (tutup PR)
+        if: steps.val.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Validasi gagal, jadi PR ini ditutup otomatis. Perbaiki file sesuai catatan di atas, lalu buka PR baru. Perubahan tidak akan pernah aktif lewat PR ini.'
+            });
+            await github.rest.pulls.update({
+              pull_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'closed'
+            });
