@@ -70,15 +70,15 @@ export default function Home() {
               </p>
             </div>
             <div className="card">
-              <h3>Email gratis: mailbox atau terusan</h3>
+              <h3>Email gratis: mailbox asli</h3>
               <p className="muted small" style={{ marginTop: 0 }}>
                 Butuh email sungguhan? Dapatkan akun{" "}
                 <span className="domain">nama<span className="zone">@{SITE.zone}</span></span>{" "}
                 dengan webmail, IMAP, dan SMTP lewat ruang.email, kuota 10 GB per akun.
               </p>
               <p className="small" style={{ marginBottom: 0 }}>
-                Kalau cukup menerima, pilih mode terusan: surel masuk diteruskan ke email
-                pribadimu, tanpa login tambahan. Keduanya diklaim lewat pull request.
+                Kirim dan terima seperti layaknya email berbayar. Diklaim lewat pull request,
+                aktif otomatis begitu PR di-merge.
               </p>
             </div>
           </div>
@@ -218,9 +218,9 @@ export default function Home() {
             <details className="faq">
               <summary>Emailnya bisa dipakai mengirim?</summary>
               <div className="a">
-                Akun mailbox <span className="mono">nama@{SITE.zone}</span> bisa: kirim dan terima
-                lewat webmail atau aplikasi apa pun via SMTP dan IMAP. Mode terusan tidak:
-                alamatnya hanya menerima dan meneruskan surel ke email pribadimu.
+                Bisa. Akun mailbox <span className="mono">nama@{SITE.zone}</span> kirim dan terima
+                lewat webmail atau aplikasi apa pun via SMTP dan IMAP, persis seperti email
+                berbayar.
               </div>
             </details>
             <details className="faq">
@@ -228,9 +228,8 @@ export default function Home() {
               <div className="a">
                 Infrastruktur mailbox dijalankan di ruang.email dengan {SITE.mailboxSlots} akun
                 gratis per domain, jadi slotnya diprioritaskan untuk proyek yang aktif dipakai.
-                Untuk alamat tambahan, pakai mode terusan yang tidak memakan slot. Kalau kamu
-                butuh banyak mailbox aktif, sampaikan lewat issue: pengelola yang mengajukan
-                penambahan kapasitas.
+                Kalau kamu butuh banyak mailbox aktif, sampaikan lewat issue: pengelola yang
+                mengajukan penambahan kapasitas.
               </div>
             </details>
           </div>

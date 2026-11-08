@@ -14,7 +14,7 @@ export type EmailEntry = {
   domain: string;
   address: string;
   owner: string;
-  forward: string;
+  contact: string;
 };
 
 export function recordSummary(records: DomainEntry["records"]): string[] {

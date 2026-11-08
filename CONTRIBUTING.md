@@ -45,20 +45,6 @@ Setelah PR merge, akun dibuat otomatis oleh workflow repo dan sandi awal dikirim
 seluruh zona, jadi gunakan untuk keperluan yang benar-benar aktif. JANGAN pernah menaruh
 password di file mana pun; bot akan menolak PR yang mengandung field `password`.
 
-### Terusan saja
-
-```json
-{
-  "domain": "sang.ceo",
-  "address": "nama",
-  "type": "forward",
-  "owner": "username-github-mu",
-  "forward": "email-pribadi@kamu.dev"
-}
-```
-
-Surel yang masuk diteruskan ke alamat `forward`. Tidak memakan jatah mailbox.
-
 ## Aturan singkat
 
 1. Satu subdomain / alamat per orang per keperluan. Tidak ada penimbunan.

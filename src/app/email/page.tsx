@@ -3,7 +3,7 @@ import EmailGenerator from "@/components/EmailGenerator";
 
 export const metadata = {
   title: "Email gratis · sang.ceo",
-  description: "Akun email asli nama@sang.ceo (IMAP, SMTP, webmail via ruang.email) atau alamat terusan gratis. Diklaim lewat pull request.",
+  description: "Akun email asli nama@sang.ceo (IMAP, SMTP, webmail via ruang.email) gratis. Diklaim lewat pull request.",
 };
 
 export default function EmailPage() {
@@ -57,8 +57,8 @@ export default function EmailPage() {
           <h2>Generator alamat email</h2>
           <p className="muted" style={{ maxWidth: "60ch" }}>
             Sama seperti subdomain: satu file JSON bernama{" "}
-            <span className="mono">emails/nama-mu.json</span> di repo registry. Pilih jenisnya
-            di generator.
+            <span className="mono">emails/nama-mu.json</span> di repo registry, isinya dari
+            generator di bawah.
           </p>
           <div style={{ marginTop: 24 }}>
             <EmailGenerator />
@@ -138,8 +138,8 @@ export default function EmailPage() {
             <li>
               <h3>Tambah file <span className="mono">emails/nama-mu.json</span></h3>
               <p>
-                Pakai generator di atas: pilih mailbox atau terusan, isi alamat dan data
-                yang diminta.
+                Pakai generator di atas: isi alamat, email kontak untuk sandi awal, dan
+                username GitHub.
               </p>
             </li>
             <li>
@@ -152,9 +152,8 @@ export default function EmailPage() {
             <li>
               <h3>Aktif otomatis setelah merge</h3>
               <p>
-                Untuk mailbox: akun dibuat otomatis di ruang.email dan sandi awal dikirim ke
-                email kontak yang kamu isi di file. Untuk terusan: rute dipasang pada email
-                routing zona. Keduanya tanpa konfigurasi tambahan dari sisi kamu.
+                Akun dibuat otomatis di ruang.email dan sandi awal dikirim ke email kontak
+                yang kamu isi di file. Tanpa konfigurasi tambahan dari sisi kamu.
               </p>
             </li>
           </ol>

@@ -8,7 +8,7 @@ database-nya**. Satu klaim = satu file JSON, masuk lewat pull request.
 sang-ceo/
 ├── data/
 │   ├── domains/        # satu file per subdomain: nama.sang.ceo.json
-│   └── emails/         # satu file per alamat: nama.json (mailbox / forward)
+│   └── emails/         # satu file per alamat mailbox: nama.json
 ├── scripts/
 │   ├── validate.mjs    # validasi klaim, dipakai workflow validate-pr.yml
 │   └── gen-dnsconfig.mjs # hasilkan dnsconfig.js untuk DNSControl
@@ -49,10 +49,7 @@ sang-ceo/
     muncul di repo.
   - `mail-admin.yml`: aksi manual untuk menghapus akun (hapus user via API + hapus file
     klaimnya dari registry).
-  Jatah gratis 3 akun; bila penuh, ajukan tambahan kapasitas ke admin ruang.email
-  atau arahkan pengklaim ke mode terusan.
-- **Email terusan**: aktifkan Cloudflare Email Routing untuk zona, lalu tambahkan rute
-  `alamat@sang.ceo` ke email pemilik setelah PR merge.
+  Jatah gratis 3 akun; bila penuh, ajukan tambahan kapasitas ke admin ruang.email.
 
 ## Konfigurasi
 
