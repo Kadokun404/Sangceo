@@ -2,6 +2,7 @@
 // dengan favicon (src/app/icon.svg). Jalankan: node scripts/gen-icons.mjs
 import fs from "node:fs";
 import sharp from "sharp";
+import pngToIco from "png-to-ico";
 
 const INK = "#221a12";
 const PAPER = "#f6efe3";
@@ -46,4 +47,7 @@ fs.writeFileSync("tmp-gen/apple.svg", appleSvg);
 fs.writeFileSync("tmp-gen/og.svg", ogSvg);
 await sharp(Buffer.from(appleSvg)).resize(180, 180).png().toFile("src/app/apple-icon.png");
 await sharp(Buffer.from(ogSvg)).png().toFile("src/app/opengraph-image.png");
+const icoBufs = await Promise.all([48, 32, 16].map((n) => sharp(Buffer.from(appleSvg)).resize(n, n).png().toBuffer()));
+const ico = await pngToIco(icoBufs);
+fs.writeFileSync("src/app/favicon.ico", ico);
 console.log("ikon dibuat: icon.svg, apple-icon.png, opengraph-image.png");
