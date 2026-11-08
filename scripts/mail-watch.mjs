@@ -5,6 +5,7 @@
 //   cd /root/sang-ceo && git pull --ff-only && node scripts/mail-watch.mjs
 // State pemrosesan ada di .state-mail.json (di-gitignore).
 
+import { execSync } from "node:child_process";
 import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
@@ -13,6 +14,51 @@ const ROOT = path.resolve(import.meta.dirname, "..");
 const BASE_URL = "https://ruang.email";
 const ZONE = "sang.ceo";
 const QUOTA_MB = 1024;
+
+// Repo GitHub tempat registry hidup, dibaca dari origin.
+const REPO = (() => {
+  const url = execSync("git remote get-url origin", { cwd: ROOT, encoding: "utf8" }).trim();
+  return url.replace(/^https:\/\/github\.com\//, "").replace(/\.git$/, "").replace(/^[^@]+@github\.com:/, "");
+})();
+
+async function ghGet(pathname) {
+  const res = await fetch(`https://api.github.com${pathname}`, {
+    headers: { Accept: "application/vnd.github+json", "User-Agent": "sang-ceo-registry" },
+  });
+  return res.json();
+}
+
+// Penerima sandi: email publik akun GitHub pembuka PR; bila tidak ada, email author
+// commit. Alamat noreply GitHub tidak bisa menerima surel, jadi tidak dipakai.
+async function resolveRecipient(file) {
+  const shas = execSync(`git log --diff-filter=A --format=%H -- data/emails/${file}`, {
+    cwd: ROOT,
+    encoding: "utf8",
+  })
+    .split("\n")
+    .filter(Boolean);
+  if (shas.length === 0) return { email: null, reason: "tidak ada commit yang menambahkan file" };
+  const sha = shas[shas.length - 1];
+
+  try {
+    const prs = await ghGet(`/repos/${REPO}/commits/${sha}/pulls`);
+    if (Array.isArray(prs) && prs.length > 0) {
+      const user = await ghGet(`/users/${prs[0].user.login}`);
+      if (user.email) return { email: user.email, via: `email publik GitHub @${prs[0].user.login}` };
+    }
+  } catch {
+    // API GitHub gagal (mis. limit); lanjut ke email author commit.
+  }
+
+  const authorEmail = execSync(`git log --format=%ae -1 ${sha}`, { cwd: ROOT, encoding: "utf8" }).trim();
+  if (/@users\.noreply\.github\.com$/.test(authorEmail)) {
+    return {
+      email: null,
+      reason: "email GitHub pengklaim tidak publik dan commit memakai alamat noreply; minta pengklaim menampilkan email publik",
+    };
+  }
+  return { email: authorEmail, via: "email author commit" };
+}
 
 function loadEnv(file) {
   if (!fs.existsSync(file)) return {};
@@ -62,9 +108,16 @@ for (const file of files) {
   } catch {
     continue; // file tidak valid, biarkan bot validasi yang menolaknya di PR
   }
-  if (data.type !== "mailbox" || !data.address || !data.contact) continue;
+  if (data.type !== "mailbox" || !data.address) continue;
 
   const email = `${data.address}@${ZONE}`;
+  const recipient = await resolveRecipient(file);
+  if (!recipient.email) {
+    state[file] = `skip: ${recipient.reason}`;
+    console.log(`${email}: ${state[file]}`);
+    dirty = true;
+    continue;
+  }
   const password = crypto.randomBytes(12).toString("base64url");
 
   const created = await post("/manage/api/create-user", {
@@ -99,6 +152,8 @@ for (const file of files) {
     ``,
     `Langkah pertama: masuk ke ${BASE_URL}/webmail dengan alamat di atas, lalu SEGERA ganti sandi dari pengaturan.`,
     ``,
+    `Sandi ini dikirim ke ${recipient.via}. Jangan bagikan ke siapa pun.`,
+    ``,
     `Parameter koneksi aplikasi (Gmail, Apple Mail, Outlook):`,
     `- SMTP (kirim): mx1.ruang.email port 465 (SSL) atau 587 (STARTTLS)`,
     `- IMAP (terima): mx1.ruang.email port 993 (SSL)`,
@@ -108,7 +163,7 @@ for (const file of files) {
   const sent = await post("/api/webmail/send", {
     email: OWNER_EMAIL,
     password: OWNER_PASS,
-    to: data.contact,
+    to: recipient.email,
     subject: `Akun ${email} aktif`,
     from_name: `${ZONE} Registry`,
     body_text: bodyText,

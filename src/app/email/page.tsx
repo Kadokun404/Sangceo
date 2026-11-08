@@ -115,8 +115,9 @@ export default function EmailPage() {
           </div>
           <p className="small muted" style={{ marginTop: 12 }}>
             Username untuk semua koneksi adalah alamat lengkapnya, misal{" "}
-            <span className="mono">halo@{SITE.zone}</span>. Sandi awal dikirim pengelola ke
-            kontakmu setelah PR merge, lalu segera ganti dari pengaturan webmail.
+            <span className="mono">halo@{SITE.zone}</span>. Sandi awal dikirim otomatis ke
+            email akun GitHub yang membuka PR setelah merge, lalu segera ganti dari
+            pengaturan webmail.
           </p>
         </div>
       </section>
@@ -138,8 +139,8 @@ export default function EmailPage() {
             <li>
               <h3>Tambah file <span className="mono">emails/nama-mu.json</span></h3>
               <p>
-                Pakai generator di atas: isi alamat, email kontak untuk sandi awal, dan
-                username GitHub.
+                Pakai generator di atas: isi alamat dan username GitHub. Sandi nanti
+                dikirim ke email akun GitHub-mu.
               </p>
             </li>
             <li>
@@ -152,8 +153,9 @@ export default function EmailPage() {
             <li>
               <h3>Aktif otomatis setelah merge</h3>
               <p>
-                Akun dibuat otomatis di ruang.email dan sandi awal dikirim ke email kontak
-                yang kamu isi di file. Tanpa konfigurasi tambahan dari sisi kamu.
+                Akun dibuat otomatis di ruang.email dan sandi awal dikirim ke email akun
+                GitHub yang membuka PR (email publik di profil, atau email author commit).
+                Tanpa konfigurasi tambahan dari sisi kamu.
               </p>
             </li>
           </ol>

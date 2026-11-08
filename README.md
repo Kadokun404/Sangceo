@@ -61,10 +61,11 @@ sang-ceo/
   ```
 
   Alurnya tiap 5 menit: `git pull` → `mail-watch.mjs` membuat akun mailbox baru via API
-  `create-user`, mengacak sandi, lalu mengirimnya ke `contact` pengklaim via API `send`
-  (progres di `.state-mail.json`, gagal dicoba ulang otomatis) → bila token Cloudflare
-  tersedia, `gen-dnsconfig.mjs` + `dnscontrol push` menyinkronkan record subdomain.
-  Log di `mail-watch.log` dan `dns-push.log`.
+  `create-user`, mengacak sandi, lalu mengirimnya ke email akun GitHub pembuka PR via API
+  `send` (email publik profil, fallback email author commit; progres di `.state-mail.json`,
+  gagal dicoba ulang otomatis) → bila token Cloudflare tersedia, `gen-dnsconfig.mjs` +
+  `dnscontrol push` menyinkronkan record subdomain → bila `data/` berubah, situs dibangun
+  ulang dan service dimuat ulang. Log di `mail-watch.log`, `dns-push.log`, `site-build.log`.
 - `scripts/mail-delete.mjs` untuk menghapus akun bermasalah (pelanggaran / permintaan hapus).
   Jatah gratis 3 akun; bila penuh, ajukan tambahan kapasitas ke admin ruang.email.
 

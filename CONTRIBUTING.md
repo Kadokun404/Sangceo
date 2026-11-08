@@ -35,15 +35,17 @@ Buat file `emails/nama.json`:
   "domain": "sang.ceo",
   "address": "nama",
   "type": "mailbox",
-  "owner": "username-github-mu",
-  "contact": "email-pribadi@kamu.dev"
+  "owner": "username-github-mu"
 }
 ```
 
-Setelah PR merge, akun dibuat otomatis oleh workflow repo dan sandi awal dikirim ke
-`contact`. Segera ganti sandi dari webmail. Jatah mailbox gratis terbatas 3 akun untuk
-seluruh zona, jadi gunakan untuk keperluan yang benar-benar aktif. JANGAN pernah menaruh
-password di file mana pun; bot akan menolak PR yang mengandung field `password`.
+Setelah PR merge, akun dibuat otomatis oleh runner pengelola dan sandi awal dikirim ke
+**email akun GitHub yang membuka PR** (email publik di profil; bila tidak ada, email
+author commit). Alamat `@users.noreply.github.com` tidak bisa menerima surel, jadi
+pastikan salah satunya asli. Segera ganti sandi dari webmail. Jatah mailbox gratis
+terbatas 3 akun untuk seluruh zona, jadi gunakan untuk keperluan yang benar-benar aktif.
+JANGAN pernah menaruh password di file mana pun; bot akan menolak PR yang mengandung
+field `password`.
 
 ## Aturan singkat
 
