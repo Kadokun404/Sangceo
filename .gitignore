@@ -51,3 +51,4 @@ dns-push.log
 .sessions.json
 .claim-users.json
 site-build.log
+tmp-gen/
