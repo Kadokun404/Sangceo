@@ -22,7 +22,7 @@ const entries = fs
 
 let body = "";
 for (const e of entries) {
-  body += `  // ${e.subdomain} — ${e.owner}\n`;
+  body += `  // ${e.subdomain} - ${e.owner}\n`;
   for (const [type, value] of Object.entries(e.records || {})) {
     const vals = Array.isArray(value) ? value : [value];
     for (const v of vals) {

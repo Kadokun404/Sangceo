@@ -228,8 +228,9 @@ export default function Home() {
               <div className="a">
                 Infrastruktur mailbox dijalankan di ruang.email dengan {SITE.mailboxSlots} akun
                 gratis per domain, jadi slotnya diprioritaskan untuk proyek yang aktif dipakai.
-                Untuk alamat tambahan, pakai mode terusan yang tidak memakan slot, atau
-                daftarkan domainmu sendiri di ruang.email.
+                Untuk alamat tambahan, pakai mode terusan yang tidak memakan slot. Kalau kamu
+                butuh banyak mailbox aktif, sampaikan lewat issue: pengelola yang mengajukan
+                penambahan kapasitas.
               </div>
             </details>
           </div>

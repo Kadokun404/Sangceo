@@ -162,9 +162,10 @@ export default function EmailPage() {
             </li>
           </ol>
           <div className="panel small muted" style={{ marginTop: 16 }}>
-            Butuh lebih dari {SITE.mailboxSlots} mailbox aktif, atau ingin domain sendiri di
-            ruang.email? Pengelola bisa mengajukan penambahan kapasitas ke admin ruang.email,
-            atau kamu mendaftarkan domain milikmu sendiri di sana langsung.
+            Email sang.ceo gratis dan diklaim dengan cara yang sama seperti subdomain:
+            lewat pull request ke repo registry. Tidak perlu mendaftarkan atau membeli
+            domain apa pun. Kalau jatah mailbox penuh, pengelola yang mengajukan
+            penambahan kapasitas ke admin ruang.email.
           </div>
           <p className="small muted" style={{ marginTop: 8 }}>
             Pertanyaan teknis soal rute email bisa kamu sampaikan lewat issue di repo registry.
