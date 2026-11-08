@@ -46,3 +46,5 @@ next-env.d.ts
 /dnsconfig.d/
 /validate.log
 .state-mail.json
+mail-watch.log
+dns-push.log

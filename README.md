@@ -43,25 +43,28 @@ sang-ceo/
   dan `RUANG_OWNER_PASS`. Password jangan pernah ditulis di file atau chat mana pun.
 - Setelah itu semua otomatis lewat workflow:
   - `validate-pr.yml`: bot memeriksa format klaim, memberi komentar pratinjau, dan menutup
-    PR otomatis saat validasi gagal. Tidak butuh secret.
-- **Provisioning mailbox berjalan lokal, bukan di GitHub** supaya password akun pemilik
-  domain tidak pernah menyentuh repo. Di mesin pengelola:
+    PR otomatis saat validasi gagal. Ini satu-satunya workflow di repo dan tidak butuh
+    secret apa pun.
+- **Semua kredensial tinggal di mesin pengelola, bukan di GitHub.** Provisioning mailbox
+  dan push DNS dijalankan oleh `scripts/sync.sh` lewat cron di server:
 
   ```
-  # .env.provision.local (di-gitignore)
+  # .env.provision.local (di-gitignore, hanya di server)
   RUANG_OWNER_EMAIL=nauval@sang.ceo
   RUANG_OWNER_PASS=********
+  CLOUDFLARE_API_TOKEN=********
+  CLOUDFLARE_ACCOUNT_ID=********
   ```
-
-  Cron tiap 5 menit:
 
   ```cron
-  */5 * * * * cd /root/sang-ceo && git pull --ff-only && node scripts/mail-watch.mjs >> mail-watch.log 2>&1
+  */5 * * * * /root/sang-ceo/scripts/sync.sh
   ```
 
-  `mail-watch.mjs` membuat akun via API `create-user`, mengacak sandi, lalu mengirimnya ke
-  `contact` pengklaim via API `send`. Progres dicatat di `.state-mail.json`; file yang gagal
-  dicoba ulang di sikap berikutnya.
+  Alurnya tiap 5 menit: `git pull` → `mail-watch.mjs` membuat akun mailbox baru via API
+  `create-user`, mengacak sandi, lalu mengirimnya ke `contact` pengklaim via API `send`
+  (progres di `.state-mail.json`, gagal dicoba ulang otomatis) → bila token Cloudflare
+  tersedia, `gen-dnsconfig.mjs` + `dnscontrol push` menyinkronkan record subdomain.
+  Log di `mail-watch.log` dan `dns-push.log`.
 - `scripts/mail-delete.mjs` untuk menghapus akun bermasalah (pelanggaran / permintaan hapus).
   Jatah gratis 3 akun; bila penuh, ajukan tambahan kapasitas ke admin ruang.email.
 
