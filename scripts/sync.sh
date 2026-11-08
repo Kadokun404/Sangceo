@@ -1,5 +1,6 @@
 #!/bin/sh
 # Runner sinkronisasi lokal untuk registry sang.ceo.
+PATH=/root/.nvm/versions/node/v22.22.2/bin:/usr/local/bin:/usr/bin:/bin
 # Dipanggil cron tiap 5 menit. Semua kredensial dibaca dari file lokal
 # .env.provision.local — tidak ada secret yang tersimpan di repo GitHub.
 
