@@ -1,0 +1,27 @@
+name: Provisioning mailbox
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "data/emails/**"
+
+permissions:
+  contents: read
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Buat akun mailbox dan kirim sandi
+        env:
+          RUANG_OWNER_EMAIL: ${{ secrets.RUANG_OWNER_EMAIL }}
+          RUANG_OWNER_PASS: ${{ secrets.RUANG_OWNER_PASS }}
+          GITHUB_STEP_SUMMARY: ${{ env.GITHUB_STEP_SUMMARY }}
+        run: node scripts/mail-create.mjs "${{ github.event.before }}" "${{ github.sha }}"

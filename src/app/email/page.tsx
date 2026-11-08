@@ -150,14 +150,11 @@ export default function EmailPage() {
               </p>
             </li>
             <li>
-              <h3>Aktif setelah merge</h3>
+              <h3>Aktif otomatis setelah merge</h3>
               <p>
-                Untuk mailbox: pengelola membuat akun di{" "}
-                <a href={SITE.mail.portal} target="_blank" rel="noopener noreferrer">
-                  portal kelola
-                </a>{" "}
-                dan mengirim sandi awal. Untuk terusan: rute dipasang pada email routing zona.
-                Keduanya tanpa konfigurasi tambahan dari sisi kamu.
+                Untuk mailbox: akun dibuat otomatis di ruang.email dan sandi awal dikirim ke
+                email kontak yang kamu isi di file. Untuk terusan: rute dipasang pada email
+                routing zona. Keduanya tanpa konfigurasi tambahan dari sisi kamu.
               </p>
             </li>
           </ol>

@@ -11,10 +11,12 @@ export default function EmailGenerator() {
   const [address, setAddress] = useState("");
   const [forward, setForward] = useState("");
   const [owner, setOwner] = useState("");
+  const [contact, setContact] = useState("");
 
   const cleanAddr = address.trim().toLowerCase();
   const validAddr = /^[a-z0-9]([a-z0-9._-]*[a-z0-9])?$/.test(cleanAddr);
   const validFwd = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forward.trim());
+  const validContact = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.trim());
 
   const json = useMemo(() => {
     const base = {
@@ -26,12 +28,13 @@ export default function EmailGenerator() {
     const obj =
       mode === "forward"
         ? { ...base, forward: forward.trim() || "email-pribadi@kamu.dev" }
-        : base;
+        : { ...base, contact: contact.trim() || "email-pribadi@kamu.dev" };
     return JSON.stringify(obj, null, 2);
-  }, [mode, cleanAddr, owner, forward]);
+  }, [mode, cleanAddr, owner, forward, contact]);
 
   const filename = `emails/${cleanAddr || "nama-mu"}.json`;
-  const ready = validAddr && cleanAddr !== "" && owner.trim() !== "" && (mode === "mailbox" || validFwd);
+  const ready =
+    validAddr && cleanAddr !== "" && owner.trim() !== "" && (mode === "forward" ? validFwd : validContact);
 
   return (
     <div className="split">
@@ -78,6 +81,17 @@ export default function EmailGenerator() {
           </div>
         )}
 
+        {mode === "mailbox" && (
+          <div className="field">
+            <label htmlFor="contact">Email kontak untuk sandi awal</label>
+            <input id="contact" className="input" type="email" placeholder="email-pribadi@kamu.dev" value={contact} onChange={(e) => setContact(e.target.value)} autoComplete="off" spellCheck={false} />
+            <p className="small muted" style={{ marginTop: 6 }}>
+              Sandi awal dikirim otomatis ke alamat ini setelah PR merge. Repo ini publik,
+              jadi jangan pernah menaruh password langsung di file.
+            </p>
+          </div>
+        )}
+
         <div className="field">
           <label htmlFor="eowner">Username GitHub</label>
           <input id="eowner" className="input" type="text" placeholder="username-github-mu" value={owner} onChange={(e) => setOwner(e.target.value)} autoComplete="off" spellCheck={false} />
@@ -99,14 +113,14 @@ export default function EmailGenerator() {
             </a>
           ) : (
             <span className="small muted">
-              Isi nama alamat{mode === "forward" ? ", email tujuan," : ""} dan username GitHub untuk
+              Isi nama alamat, {mode === "forward" ? "email tujuan," : "email kontak,"} dan username GitHub untuk
               membuka editor GitHub.
             </span>
           )}
         </p>
         <p className="small muted">
           {mode === "mailbox"
-            ? "Setelah PR di-merge, pengelola membuat akunnya di portal ruang.email dan mengirim sandi awal lewat surel. Jangan pernah menaruh password di repo."
+            ? "Setelah PR di-merge, akunmu dibuat otomatis di ruang.email dan sandi awal dikirim ke email kontak yang kamu isi. Ganti sandi segera setelah masuk."
             : "Setelah PR di-merge, rute penerusan dipasang oleh pengelola, lalu alamatmu mulai menerima surel."}
         </p>
       </div>

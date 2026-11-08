@@ -70,7 +70,9 @@ for (const file of changed) {
       previews.push(`| \`${subdomain}.${ZONE}\` | ${owner} | ${data.description || "-"} | ${rec} |`);
     }
   } else if (rel.startsWith("data/emails/")) {
-    const { domain, address, owner, type, forward } = data;
+    const { domain, address, owner, type, forward, contact, password } = data;
+    if (password)
+      errors.push(`\`${rel}\`: JANGAN taruh password di file. Sandi dikirim otomatis ke \`contact\` setelah merge`);
     if (domain !== ZONE) errors.push(`\`${rel}\`: \`domain\` harus \`${ZONE}\``);
     if (!address || !EMAIL_RE.test(address))
       errors.push(`\`${rel}\`: \`address\` tidak valid (huruf kecil, angka, titik, tanda hubung)`);
@@ -79,11 +81,15 @@ for (const file of changed) {
       errors.push(`\`${rel}\`: \`type\` harus \`mailbox\` atau \`forward\``);
     if (type === "forward" && (!forward || !ADDR_RE.test(forward)))
       errors.push(`\`${rel}\`: \`forward\` harus berupa alamat email yang valid`);
+    if (type === "mailbox" && (!contact || !ADDR_RE.test(contact)))
+      errors.push(`\`${rel}\`: \`contact\` wajib berupa alamat email penerima sandi awal`);
     if (address && existing.mail.has(address) && !rel.endsWith(`/${address}.json`))
       errors.push(`\`${rel}\`: alamat \`${address}\` sudah diklaim orang lain`);
     if (!errors.some((e) => e.startsWith(`\`${rel}\``))) {
       previews.push(
-        `| \`${address}@${ZONE}\` | ${owner} | ${type === "mailbox" ? "mailbox" : `terusan ke \`${forward}\``} |`
+        type === "mailbox"
+          ? `| \`${address}@${ZONE}\` | ${owner} | mailbox, sandi ke \`${contact}\` |`
+          : `| \`${address}@${ZONE}\` | ${owner} | terusan ke \`${forward}\` |`
       );
     }
   }

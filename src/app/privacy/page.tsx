@@ -14,8 +14,10 @@ export default function PrivacyPage() {
           nilai record DNS, dan untuk email, alamat tujuan penerusan.
         </p>
         <p className="small muted">
-          Karena repo-nya publik, jangan menaruh informasi pribadi di deskripsi. Alamat tujuan
-          penerusan email ikut terlihat di file tersebut.
+          Karena repo-nya publik, jangan menaruh informasi pribadi di deskripsi. Untuk klaim
+          email, alamat tujuan penerusan dan kontak penerima sandi awal ikut terlihat di file
+          tersebut. Sandi akun mailbox tidak pernah disimpan di repo: dibuat otomatis saat
+          provisioning dan dikirim langsung ke kontakmu.
         </p>
         <h2 style={{ marginTop: 24 }}>Data yang tidak kami kumpulkan</h2>
         <p>

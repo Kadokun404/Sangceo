@@ -38,12 +38,17 @@ sang-ceo/
   lalu DNSControl.
 - **Email mailbox**: daftarkan zona `sang.ceo` di [ruang.email](https://ruang.email/register),
   pasang 5 record wajibnya (2 MX, SPF, DKIM, DMARC) di Cloudflare, lalu verifikasi.
-  Akun pemilik domain di ruang.email adalah pintu masuk [portal kelola](https://ruang.email/manage)
-  tempat akun mailbox dibuat. SOP per klaim mailbox:
-  1. PR `emails/nama.json` dengan `type: "mailbox"` di-merge.
-  2. Buat akun di portal kelola, isikan kuota 10 GB.
-  3. Kirim sandi awal ke pengklaim (via surel dari PR/issue, bukan lewat repo).
-  4. Pengklaim ganti sandi dari webmail.
+  Akun pemilik domain di ruang.email adalah akun yang dipakai workflow provisioning.
+  Simpan kredensialnya sebagai secret repo: `RUANG_OWNER_EMAIL` (mis. `admin@sang.ceo`)
+  dan `RUANG_OWNER_PASS`. Password jangan pernah ditulis di file atau chat mana pun.
+- Setelah itu semua otomatis lewat workflow:
+  - `validate-pr.yml`: bot memeriksa format klaim dan memberi komentar pratinjau di PR.
+  - `dns-push.yml`: mem-push record subdomain ke Cloudflare saat PR subdomain merge.
+  - `mail-provision.yml`: membuat akun mailbox via API `create-user`, menghasilkan sandi
+    acak, lalu mengirimnya ke `contact` pengklaim via API `send`. Sandi tidak pernah
+    muncul di repo.
+  - `mail-admin.yml`: aksi manual untuk menghapus akun (hapus user via API + hapus file
+    klaimnya dari registry).
   Jatah gratis 3 akun; bila penuh, ajukan tambahan kapasitas ke admin ruang.email
   atau arahkan pengklaim ke mode terusan.
 - **Email terusan**: aktifkan Cloudflare Email Routing untuk zona, lalu tambahkan rute

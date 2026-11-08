@@ -35,14 +35,15 @@ Buat file `emails/nama.json`:
   "domain": "sang.ceo",
   "address": "nama",
   "type": "mailbox",
-  "owner": "username-github-mu"
+  "owner": "username-github-mu",
+  "contact": "email-pribadi@kamu.dev"
 }
 ```
 
-Setelah PR merge, pengelola membuat akunnya di portal ruang.email dan mengirim sandi
-awal lewat surel ke kamu (hubungi lewat issue PR). Segera ganti sandi dari webmail.
-Jatah mailbox gratis terbatas 3 akun untuk seluruh zona, jadi gunakan untuk keperluan
-yang benar-benar aktif. Jangan pernah menaruh password di file mana pun.
+Setelah PR merge, akun dibuat otomatis oleh workflow repo dan sandi awal dikirim ke
+`contact`. Segera ganti sandi dari webmail. Jatah mailbox gratis terbatas 3 akun untuk
+seluruh zona, jadi gunakan untuk keperluan yang benar-benar aktif. JANGAN pernah menaruh
+password di file mana pun; bot akan menolak PR yang mengandung field `password`.
 
 ### Terusan saja
 
