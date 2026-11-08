@@ -48,3 +48,6 @@ next-env.d.ts
 .state-mail.json
 mail-watch.log
 dns-push.log
+.sessions.json
+.claim-users.json
+site-build.log

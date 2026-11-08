@@ -43,8 +43,16 @@ async function resolveRecipient(file) {
   try {
     const prs = await ghGet(`/repos/${REPO}/commits/${sha}/pulls`);
     if (Array.isArray(prs) && prs.length > 0) {
-      const user = await ghGet(`/users/${prs[0].user.login}`);
-      if (user.email) return { email: user.email, via: `email publik GitHub @${prs[0].user.login}` };
+      const login = prs[0].user.login;
+      // Email dari login via situs (OAuth): email utama terverifikasi GitHub.
+      try {
+        const users = JSON.parse(fs.readFileSync(path.join(ROOT, ".claim-users.json"), "utf8"));
+        if (users[login]?.email) return { email: users[login].email, via: `email GitHub terverifikasi @${login}` };
+      } catch {
+        // belum ada yang pernah login via situs
+      }
+      const user = await ghGet(`/users/${login}`);
+      if (user.email) return { email: user.email, via: `email publik GitHub @${login}` };
     }
   } catch {
     // API GitHub gagal (mis. limit); lanjut ke email author commit.

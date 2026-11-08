@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { repoUrl } from "@/config";
 import ThemeToggle from "./ThemeToggle";
+import GithubAuth from "./GithubAuth";
 
 const NAV = [
   { href: "/domains", label: "Daftar domain" },
@@ -30,6 +31,7 @@ export default function Header() {
           <a href={repoUrl()} target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
+          <GithubAuth />
           <ThemeToggle />
         </nav>
       </div>

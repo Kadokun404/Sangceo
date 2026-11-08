@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { SITE, newFileUrl } from "@/config";
 import CopyButton from "./CopyButton";
+import QuickClaim from "./QuickClaim";
 
 export default function EmailGenerator() {
   const [address, setAddress] = useState("");
@@ -81,6 +82,7 @@ export default function EmailGenerator() {
             </span>
           )}
         </p>
+        <QuickClaim body={ready ? { kind: "mailbox", address: cleanAddr } : null} />
         <p className="small muted">
           Setelah PR di-merge, akunmu dibuat otomatis di ruang.email dan sandi awal dikirim
           ke email akun GitHub yang membuka PR. Ganti sandi segera setelah masuk.

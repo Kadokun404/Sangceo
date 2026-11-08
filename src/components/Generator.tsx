@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { SITE, newFileUrl } from "@/config";
 import CopyButton from "./CopyButton";
+import QuickClaim from "./QuickClaim";
 
 const PRESETS = [
   { id: "vercel", label: "Vercel", target: "cname.vercel-dns.com", fixed: true },
@@ -167,6 +168,7 @@ export default function Generator() {
             </span>
           )}
         </p>
+        <QuickClaim body={ready ? { kind: "subdomain", subdomain: cleanSub, cname: recordType === "CNAME" ? target.trim() : undefined } : null} />
         <p className="small muted">
           Tombol di atas membuka halaman file baru di repo registry dengan isi JSON sudah
           terisi. Periksa sebentar, lalu buat pull request-nya.
