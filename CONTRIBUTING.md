@@ -24,7 +24,9 @@ Buat file `domains/nama.sang.ceo.json`:
 - Nama bertingkat (`api.app`) dan wildcard (`*.app`) di atas nama yang sudah kamu klaim
   ditulis dalam file sendiri, misal `domains/api.nama.sang.ceo.json`.
 
-## Klaim email terusan
+## Klaim email: dua pilihan
+
+### Akun mailbox penuh (ruang.email)
 
 Buat file `emails/nama.json`:
 
@@ -32,12 +34,29 @@ Buat file `emails/nama.json`:
 {
   "domain": "sang.ceo",
   "address": "nama",
+  "type": "mailbox",
+  "owner": "username-github-mu"
+}
+```
+
+Setelah PR merge, pengelola membuat akunnya di portal ruang.email dan mengirim sandi
+awal lewat surel ke kamu (hubungi lewat issue PR). Segera ganti sandi dari webmail.
+Jatah mailbox gratis terbatas 3 akun untuk seluruh zona, jadi gunakan untuk keperluan
+yang benar-benar aktif. Jangan pernah menaruh password di file mana pun.
+
+### Terusan saja
+
+```json
+{
+  "domain": "sang.ceo",
+  "address": "nama",
+  "type": "forward",
   "owner": "username-github-mu",
   "forward": "email-pribadi@kamu.dev"
 }
 ```
 
-Rute penerusan dipasang pengelola setelah PR di-merge.
+Surel yang masuk diteruskan ke alamat `forward`. Tidak memakan jatah mailbox.
 
 ## Aturan singkat
 

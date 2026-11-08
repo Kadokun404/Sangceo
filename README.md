@@ -8,11 +8,15 @@ database-nya**. Satu klaim = satu file JSON, masuk lewat pull request.
 sang-ceo/
 ├── data/
 │   ├── domains/        # satu file per subdomain: nama.sang.ceo.json
-│   └── emails/         # satu file per alamat: nama.json
+│   └── emails/         # satu file per alamat: nama.json (mailbox / forward)
+├── scripts/
+│   ├── validate.mjs    # validasi klaim, dipakai workflow validate-pr.yml
+│   └── gen-dnsconfig.mjs # hasilkan dnsconfig.js untuk DNSControl
+├── .github/workflows/  # validasi PR + push DNS otomatis
 ├── src/
 │   ├── app/            # halaman: beranda, /domains, /check, /daftar, /email, legal
-│   ├── components/     # Generator, EmailGenerator, Checker, DomainBrowser, tema
-│   ├── config.ts       # SITE.zone, repo registry (env NEXT_PUBLIC_REPO)
+│   ├── components/     # Generator, EmailGenerator, Checker, DnsTool, tema
+│   ├── config.ts       # SITE.zone, repo registry, endpoint ruang.email (env)
 │   └── lib/registry.ts # membaca data/*.json saat build
 └── DESIGN.md           # arah desain situs
 ```
@@ -27,11 +31,23 @@ sang-ceo/
 
 ## Yang perlu diatur di sisi pengelola (sekali saja)
 
-- **DNS**: zona `sang.ceo` di Cloudflare. Saat PR merge, pasang record-nya
-  (bisa otomatis dengan [DNSControl](https://dnscontrol.org) + action seperti
-  `dnscontrol-actions`, atau manual lewat dashboard).
-- **Email**: aktifkan Cloudflare Email Routing untuk zona, lalu tambahkan rute
-  penerusan `alamat@sang.ceo` ke email pemilik setelah PR merge.
+- **DNS**: zona `sang.ceo` di Cloudflare. Buat API token Cloudflare dengan izin edit
+  zona, simpan sebagai secret `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` di repo.
+  Workflow `dns-push.yml` otomatis mem-push semua record saat PR merge: jalurnya
+  `scripts/gen-dnsconfig.mjs` (membaca `data/domains/*.json` menjadi `dnsconfig.js`)
+  lalu DNSControl.
+- **Email mailbox**: daftarkan zona `sang.ceo` di [ruang.email](https://ruang.email/register),
+  pasang 5 record wajibnya (2 MX, SPF, DKIM, DMARC) di Cloudflare, lalu verifikasi.
+  Akun pemilik domain di ruang.email adalah pintu masuk [portal kelola](https://ruang.email/manage)
+  tempat akun mailbox dibuat. SOP per klaim mailbox:
+  1. PR `emails/nama.json` dengan `type: "mailbox"` di-merge.
+  2. Buat akun di portal kelola, isikan kuota 10 GB.
+  3. Kirim sandi awal ke pengklaim (via surel dari PR/issue, bukan lewat repo).
+  4. Pengklaim ganti sandi dari webmail.
+  Jatah gratis 3 akun; bila penuh, ajukan tambahan kapasitas ke admin ruang.email
+  atau arahkan pengklaim ke mode terusan.
+- **Email terusan**: aktifkan Cloudflare Email Routing untuk zona, lalu tambahkan rute
+  `alamat@sang.ceo` ke email pemilik setelah PR merge.
 
 ## Konfigurasi
 

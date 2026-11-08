@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { SITE, repoUrl } from "@/config";
 import EmailGenerator from "@/components/EmailGenerator";
 

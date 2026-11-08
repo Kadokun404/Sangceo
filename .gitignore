@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Dihasilkan CI oleh scripts/gen-dnsconfig.mjs
+/dnsconfig.js
+/creds.json
+/dnsconfig.d/
+/validate.log

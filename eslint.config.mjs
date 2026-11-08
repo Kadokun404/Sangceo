@@ -12,6 +12,10 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Artefak CI yang dihasilkan scripts/gen-dnsconfig.mjs
+    "dnsconfig.js",
+    "creds.json",
+    "dnsconfig.d/**",
   ]),
 ]);
 
