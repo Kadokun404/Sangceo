@@ -42,13 +42,27 @@ sang-ceo/
   Simpan kredensialnya sebagai secret repo: `RUANG_OWNER_EMAIL` (mis. `admin@sang.ceo`)
   dan `RUANG_OWNER_PASS`. Password jangan pernah ditulis di file atau chat mana pun.
 - Setelah itu semua otomatis lewat workflow:
-  - `validate-pr.yml`: bot memeriksa format klaim dan memberi komentar pratinjau di PR.
-  - `dns-push.yml`: mem-push record subdomain ke Cloudflare saat PR subdomain merge.
-  - `mail-provision.yml`: membuat akun mailbox via API `create-user`, menghasilkan sandi
-    acak, lalu mengirimnya ke `contact` pengklaim via API `send`. Sandi tidak pernah
-    muncul di repo.
-  - `mail-admin.yml`: aksi manual untuk menghapus akun (hapus user via API + hapus file
-    klaimnya dari registry).
+  - `validate-pr.yml`: bot memeriksa format klaim, memberi komentar pratinjau, dan menutup
+    PR otomatis saat validasi gagal. Tidak butuh secret.
+- **Provisioning mailbox berjalan lokal, bukan di GitHub** supaya password akun pemilik
+  domain tidak pernah menyentuh repo. Di mesin pengelola:
+
+  ```
+  # .env.provision.local (di-gitignore)
+  RUANG_OWNER_EMAIL=nauval@sang.ceo
+  RUANG_OWNER_PASS=********
+  ```
+
+  Cron tiap 5 menit:
+
+  ```cron
+  */5 * * * * cd /root/sang-ceo && git pull --ff-only && node scripts/mail-watch.mjs >> mail-watch.log 2>&1
+  ```
+
+  `mail-watch.mjs` membuat akun via API `create-user`, mengacak sandi, lalu mengirimnya ke
+  `contact` pengklaim via API `send`. Progres dicatat di `.state-mail.json`; file yang gagal
+  dicoba ulang di sikap berikutnya.
+- `scripts/mail-delete.mjs` untuk menghapus akun bermasalah (pelanggaran / permintaan hapus).
   Jatah gratis 3 akun; bila penuh, ajukan tambahan kapasitas ke admin ruang.email.
 
 ## Konfigurasi
