@@ -71,7 +71,6 @@ ${lines.join(",\n")});
 `;
 
 fs.writeFileSync("dnsconfig.js", config);
-fs.chmodSync("creds.json", 0o600);
 
 // dnscontrol tidak mengembangkan sintaks "env:" di creds.json, jadi nilainya
 // ditulis literal saat generate. File ini hanya ada di server dan di-gitignore.
@@ -89,5 +88,6 @@ fs.writeFileSync(
     2
   ),
 );
+fs.chmodSync("creds.json", 0o600);
 
 console.log(`dnsconfig.js dibuat untuk ${entries.length} entri subdomain.`);
